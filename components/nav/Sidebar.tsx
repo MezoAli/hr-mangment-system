@@ -4,19 +4,10 @@ import Navbar from "./Navbar";
 
 function Sidebar() {
 	return (
-		<>
-			<Flex
-				flexDir="column"
-				justifyContent="space-between"
-				alignItems="center"
-				w="20%"
-				h="100vh"
-				bg="#e5e5e5"
-			>
-				<Header />
-				<Navbar />
-			</Flex>
-		</>
+		<Flex flexDir="column" justifyContent="space-between" alignItems="center">
+			<Header />
+			<Navbar />
+		</Flex>
 	);
 }
 

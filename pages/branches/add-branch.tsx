@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 
-const Branches: NextPage = () => {
+const SpecificBranches: NextPage = () => {
 	return <h1>Upper Egypt Branch</h1>;
 };
 
-export default Branches;
+export default SpecificBranches;
