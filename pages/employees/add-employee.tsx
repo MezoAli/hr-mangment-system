@@ -6,11 +6,13 @@ import {
 	FormLabel,
 	Input,
 	Button,
+	Container,
+	Box,
 } from "@chakra-ui/react";
 
 const SpecificEmployee: NextPage = () => {
 	return (
-		<>
+		<Container my="40px">
 			<Heading size="md" textAlign="center" my={8} colorScheme="teal">
 				Add New Employee
 			</Heading>
@@ -36,17 +38,31 @@ const SpecificEmployee: NextPage = () => {
 				<Input type="number" />
 			</FormControl>
 			<FormControl isRequired>
-				<FormLabel>Select Role</FormLabel>
-				<Select placeholder="Select Role">
+				<FormLabel>Add Role</FormLabel>
+				<Input type="text" />
+			</FormControl>
+			<FormControl isRequired my={6}>
+				<FormLabel>Select Branch</FormLabel>
+				<Select placeholder="Select Branch">
 					<option value="option1">Option 1</option>
 					<option value="option2">Option 2</option>
 					<option value="option3">Option 3</option>
 				</Select>
 			</FormControl>
-			<Button type="submit" colorScheme="teal">
-				Add
-			</Button>
-		</>
+			<FormControl isRequired>
+				<FormLabel>Select Department</FormLabel>
+				<Select placeholder="Select Department">
+					<option value="option1">Option 1</option>
+					<option value="option2">Option 2</option>
+					<option value="option3">Option 3</option>
+				</Select>
+			</FormControl>
+			<Box textAlign="center" my="20px">
+				<Button type="submit" colorScheme="teal" w="100%" p="10px">
+					Add
+				</Button>
+			</Box>
+		</Container>
 	);
 };
 

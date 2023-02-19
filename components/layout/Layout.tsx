@@ -9,6 +9,9 @@ function Layout({ children }: { children: React.ReactNode }) {
 				as="aside"
 				bg="gray.200"
 				colSpan={{ base: 6, md: 2, xl: 1 }}
+				position="relative"
+				display="flex"
+				justifyContent="center"
 			>
 				<Sidebar />
 			</GridItem>

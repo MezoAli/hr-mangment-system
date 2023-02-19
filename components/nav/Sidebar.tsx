@@ -4,7 +4,12 @@ import Navbar from "./Navbar";
 
 function Sidebar() {
 	return (
-		<Flex flexDir="column" justifyContent="space-between" alignItems="center">
+		<Flex
+			flexDir="column"
+			justifyContent="space-between"
+			alignItems="center"
+			position={{ md: "fixed" }}
+		>
 			<Header />
 			<Navbar />
 		</Flex>
