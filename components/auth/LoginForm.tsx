@@ -1,8 +1,13 @@
 import { Flex, Heading, Input, Button } from "@chakra-ui/react";
+import { useAppDispatch } from "../../store/hooks";
+import { setActiveUser } from "../../store/slices/userSlice";
+import { useRouter } from "next/router";
 import { useState } from "react";
 function LoginForm() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const dispatch = useAppDispatch();
+	const router = useRouter();
 
 	const handleSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault();
@@ -19,7 +24,8 @@ function LoginForm() {
 
 		if (response.ok) {
 			const { data } = await response.json();
-			console.log(data.token);
+			dispatch(setActiveUser({ token: data.token, user: data.user }));
+			router.push("/");
 			return data;
 		}
 	};
