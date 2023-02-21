@@ -28,15 +28,21 @@ export const branchSlice = createSlice({
 			});
 			state.branchList = newState;
 		},
-		updateBranch: (state, action: PayloadAction<{ name: string }>) => {
-			const brnachIndex = state.branchList?.findIndex((item) => {
-				return item.name !== action.payload.name;
+		updateBranch: (
+			state,
+			action: PayloadAction<{ id: string; name: string; location: string }>
+		) => {
+			state.branchList?.map((item) => {
+				if (item.name == action.payload.id) {
+					item.name = action.payload.name;
+					item.location = action.payload.location;
+				}
 			});
 		},
 	},
 });
 
-export const { addBranch, removeBranch } = branchSlice.actions;
+export const { addBranch, removeBranch, updateBranch } = branchSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.counter.value;

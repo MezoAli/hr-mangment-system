@@ -1,4 +1,5 @@
-import { Avatar, Heading, Flex } from "@chakra-ui/react";
+import { Avatar, Heading, Flex, Button } from "@chakra-ui/react";
+import Link from "next/link";
 function Header() {
 	return (
 		<Flex flexDir="column" alignItems="center">
@@ -9,9 +10,14 @@ function Header() {
 				name="moutaz ali"
 				bg="gray.400"
 			/>
-			<Heading as="h3" fontSize="sm" mb="40px">
+			<Heading as="h3" fontSize="sm" mb="20px">
 				Wellcome, Moutaz Ali
 			</Heading>
+			<Link href="/login">
+				<Button color="blue.300" mb="40px">
+					Login
+				</Button>
+			</Link>
 		</Flex>
 	);
 }
