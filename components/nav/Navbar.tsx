@@ -23,13 +23,13 @@ function Navbar() {
 				<AccordionItem>
 					<h2>
 						<AccordionButton>
-							<IconButton
+							{/* <IconButton
 								aria-label="dashboard"
 								icon={<FaHome />}
 								colorScheme="teal"
 								size="sm"
 								variant="outline"
-							/>
+							/> */}
 							<Box as="span" flex="1" textAlign="left">
 								<Text m={2} fontWeight="thin">
 									Dashboard
@@ -51,13 +51,13 @@ function Navbar() {
 				<AccordionItem>
 					<h2>
 						<AccordionButton>
-							<IconButton
+							{/* <IconButton
 								aria-label="dashboard"
 								icon={<RiGitBranchFill />}
 								colorScheme="teal"
 								size="sm"
 								variant="outline"
-							/>
+							/> */}
 							<Box as="span" flex="1" textAlign="left">
 								<Text m={2} fontWeight="thin">
 									Branches
@@ -88,13 +88,13 @@ function Navbar() {
 				<AccordionItem>
 					<h2>
 						<AccordionButton>
-							<IconButton
+							{/* <IconButton
 								aria-label="dashboard"
 								icon={<FcDepartment />}
 								colorScheme="teal"
 								size="sm"
 								variant="outline"
-							/>
+							/> */}
 							<Box as="span" flex="1" textAlign="left">
 								<Text m={2} fontWeight="thin">
 									Departments
@@ -125,13 +125,13 @@ function Navbar() {
 				<AccordionItem>
 					<h2>
 						<AccordionButton>
-							<IconButton
+							{/* <IconButton
 								aria-label="dashboard"
 								icon={<ImUserTie />}
 								colorScheme="teal"
 								size="sm"
 								variant="outline"
-							/>
+							/> */}
 							<Box as="span" flex="1" textAlign="left">
 								<Text m={2} fontWeight="thin">
 									Employees
