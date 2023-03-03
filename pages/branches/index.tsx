@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { getAllBranches } from "../../store/slices/branchSlice";
+import { getAllBranches, getBranches } from "../../store/slices/branchSlice";
 import {
 	Table,
 	Thead,
@@ -29,34 +29,78 @@ import {
 } from "@chakra-ui/react";
 
 const Branches: NextPage = () => {
-	const branchList = useAppSelector((state) => state.branchs.branchList);
 	const token = useAppSelector((state) => state.user.token);
+	const branchList = useAppSelector((state) => state.branchs.branchList);
 	const dispatch = useAppDispatch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [UpdatedBranchName, setUpdatedBranchName] = useState("");
-	const [UpdatedBranchLocation, setUpdatedBranchLocation] = useState("");
-	const [id, setId] = useState("");
+	const [identifier, setIdentifier] = useState("");
+	const [id, setId] = useState(0);
 
-	const getBranches = async () => {
+	// const getBranches = async () => {
+	// 	const headers = {
+	// 		Authorization: `Bearer ${token}`,
+	// 	};
+	// 	const response = await fetch("https://hrsystem.eraasoft.com/api/branches", {
+	// 		method: "GET",
+	// 		headers: headers,
+	// 	});
+
+	// 	if (response.ok) {
+	// 		const { data } = await response.json();
+	// 		dispatch(getAllBranches(data));
+	// 	} else {
+	// 		console.error("Failed to get branches");
+	// 	}
+	// };
+
+	useEffect(() => {
+		// getBranches();
+		dispatch(getBranches(token));
+	}, [dispatch, token]);
+
+	const updateBranch = async (id: number) => {
 		const headers = {
 			Authorization: `Bearer ${token}`,
 		};
-		const response = await fetch("https://hrsystem.eraasoft.com/api/branches", {
-			method: "GET",
-			headers: headers,
-		});
+		const response = await fetch(
+			`https://hrsystem.eraasoft.com/api/branches/${id}`,
+			{
+				method: "PUT",
+				headers: headers,
+				body: JSON.stringify({
+					// id: id,
+					name: UpdatedBranchName,
+				}),
+			}
+		);
 
-		if (response.status === 200) {
-			const { data } = await response.json();
-			dispatch(getAllBranches(data));
+		if (response.ok) {
+			const { data, message } = await response.json();
 		} else {
-			console.error("Failed to get branches");
+			console.error("Failed to update branch");
 		}
 	};
 
-	useEffect(() => {
-		getBranches();
-	}, []);
+	const deleteBranch = async (id: number) => {
+		const headers = {
+			Authorization: `Bearer ${token}`,
+		};
+		const response = await fetch(
+			`https://hrsystem.eraasoft.com/api/branches/${id}`,
+			{
+				method: "DELETE",
+				headers: headers,
+			}
+		);
+
+		if (response.ok) {
+			const { data, message } = await response.json();
+			console.log(data, message);
+		} else {
+			console.error("Failed to delete branch");
+		}
+	};
 
 	return (
 		<>
@@ -86,9 +130,7 @@ const Branches: NextPage = () => {
 											<HStack spacing={4}>
 												<Button
 													color="red.300"
-													// onClick={() =>
-													// 	dispatch(removeBranch({ name: item.name }))
-													// }
+													onClick={() => deleteBranch(item.id)}
 												>
 													Delete Branch
 												</Button>
@@ -96,7 +138,8 @@ const Branches: NextPage = () => {
 													color="blue.300"
 													onClick={() => {
 														onOpen();
-														setId(item.name);
+														setIdentifier(item.name);
+														setId(item.id);
 														setUpdatedBranchName(item.name);
 													}}
 												>
@@ -114,7 +157,7 @@ const Branches: NextPage = () => {
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Update Branch ({id})</ModalHeader>
+					<ModalHeader>Update Branch ({identifier})</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
 						<form>
@@ -127,15 +170,6 @@ const Branches: NextPage = () => {
 									onChange={(e) => setUpdatedBranchName(e.target.value)}
 								/>
 							</FormControl>
-							<FormControl isRequired>
-								<FormLabel>Branch Location</FormLabel>
-								<Input
-									as="input"
-									type="text"
-									value={UpdatedBranchLocation}
-									onChange={(e) => setUpdatedBranchLocation(e.target.value)}
-								/>
-							</FormControl>
 						</form>
 					</ModalBody>
 
@@ -145,16 +179,10 @@ const Branches: NextPage = () => {
 						</Button>
 						<Button
 							variant="ghost"
-							// onClick={() => {
-							// 	dispatch(
-							// 		updateBranch({
-							// 			id: id,
-							// 			name: UpdatedBranchName,
-							// 			location: UpdatedBranchLocation,
-							// 		})
-							// 	);
-							// 	onClose();
-							// }}
+							onClick={() => {
+								updateBranch(id);
+								onClose();
+							}}
 						>
 							Save Changes
 						</Button>

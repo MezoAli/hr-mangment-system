@@ -1,8 +1,7 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useAppDispatch } from "../../store/hooks";
-import { addBranch, BranchItem } from "../../store/slices/branchSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
 	Heading,
 	FormControl,
@@ -14,30 +13,43 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 
-const initalState: BranchItem = {
-	name: "",
-	location: "",
-};
-
 const AddBranch: NextPage = () => {
-	const dispatch = useAppDispatch();
+	// const dispatch = useAppDispatch();
+	const token = useAppSelector((state) => state.user.token);
 	const [branchName, setBranchName] = useState("");
-	const [branchLocation, setBranchLocation] = useState("");
 	const toast = useToast();
 	const router = useRouter();
 
-	const handleSubmit = (e: React.SyntheticEvent): void => {
+	const handleSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault();
-		dispatch(addBranch({ name: branchName, location: branchLocation }));
+		const headers = {
+			Authorization: `Bearer ${token}`,
+		};
+		const response = await fetch(`https://hrsystem.eraasoft.com/api/branches`, {
+			method: "POST",
+			body: JSON.stringify({
+				name: branchName,
+			}),
+			headers,
+		});
+
+		const { data, status, message } = await response.json();
+
+		if (status > 300) {
+			console.log(status, message);
+			return;
+		}
 		toast({
 			title: `Branch ${branchName} created.`,
-			description: "We've created your branch for you.",
+			description: `We've created ${branchName} branch for you.`,
 			status: "success",
 			duration: 3000,
 			isClosable: true,
 		});
 		router.push("/branches");
+		// return data;
 	};
+
 	return (
 		<Container my="40px">
 			<Heading size="md" textAlign="center" my={8} colorScheme="teal">
@@ -51,15 +63,6 @@ const AddBranch: NextPage = () => {
 						type="text"
 						value={branchName}
 						onChange={(e) => setBranchName(e.target.value)}
-					/>
-				</FormControl>
-				<FormControl isRequired>
-					<FormLabel>Branch Location</FormLabel>
-					<Input
-						as="input"
-						type="text"
-						value={branchLocation}
-						onChange={(e) => setBranchLocation(e.target.value)}
 					/>
 				</FormControl>
 				<Box textAlign="center" my="20px">

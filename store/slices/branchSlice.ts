@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface BranchItem {
@@ -9,6 +9,25 @@ export interface BranchItem {
 export interface BranchState {
 	branchList: BranchItem[] | null | undefined;
 }
+
+export const getBranches = createAsyncThunk(
+	"branch/getBranches",
+	async (token: string) => {
+		const headers = {
+			Authorization: `Bearer ${token}`,
+		};
+		const response = await fetch("https://hrsystem.eraasoft.com/api/branches", {
+			method: "GET",
+			headers: headers,
+		});
+
+		const { data, message, status } = await response.json();
+		if (status >= 400) {
+			console.log(message);
+		}
+		return data;
+	}
+);
 
 const initialState: BranchState = {
 	branchList: [],
@@ -42,11 +61,13 @@ export const branchSlice = createSlice({
 		// 	});
 		// },
 	},
+	extraReducers: (builder) => {
+		builder.addCase(getBranches.fulfilled, (state, action) => {
+			state.branchList = action.payload;
+		});
+	},
 });
 
 export const { getAllBranches } = branchSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-// export const selectCount = (state: RootState) => state.counter.value;
 
 export default branchSlice.reducer;

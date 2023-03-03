@@ -22,12 +22,22 @@ function LoginForm() {
 			}),
 		});
 
-		if (response.ok) {
-			const { data } = await response.json();
+		const { data, status, message } = await response.json();
+
+		if (status == 401) {
+			alert(message);
+			return;
+		}
+		if (data) {
+			console.log(data);
 			dispatch(setActiveUser({ token: data.token, user: data.user }));
 			router.push("/");
 			return data;
 		}
+		// if (response.ok) {
+		// 	const { data } = await response.json();
+
+		// }
 	};
 
 	return (
