@@ -31,6 +31,7 @@ import {
 const Branches: NextPage = () => {
 	const token = useAppSelector((state) => state.user.token);
 	const branchList = useAppSelector((state) => state.branchs.branchList);
+	const loading = useAppSelector((state) => state.branchs.loading);
 	const dispatch = useAppDispatch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [UpdatedBranchName, setUpdatedBranchName] = useState("");
@@ -107,9 +108,10 @@ const Branches: NextPage = () => {
 			<Heading color="teal.400" textAlign="center" my="40px">
 				Branchs List
 			</Heading>
+			{loading ? <p>Loading</p> : null}
 			{branchList?.length === 0 ? (
 				<Text fontWeight="semibold" color="red.400" textAlign="center">
-					You Dont Have Any Branches Yes
+					You Dont Have Any Branches Yet
 				</Text>
 			) : (
 				<TableContainer>

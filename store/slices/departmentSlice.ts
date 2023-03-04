@@ -1,31 +1,35 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+// import type { PayloadAction } from "@reduxjs/toolkit";
+// import build from "next/dist/build";
 
-export interface BranchItem {
+export interface DepartmentItem {
 	name: string;
 	id: number;
 }
 
-export interface BranchState {
-	branchList: BranchItem[] | null | undefined;
+export interface DepartmentState {
+	departmentList: DepartmentItem[] | null | undefined;
 	loading: boolean;
 }
 
-const initialState: BranchState = {
-	branchList: [],
-	loading: true,
+const initialState: DepartmentState = {
+	departmentList: [],
+	loading: false,
 };
 
-export const getBranches = createAsyncThunk(
-	"branch/getBranches",
+export const getDepartments = createAsyncThunk(
+	"department/getDepartments",
 	async (token: string) => {
 		const headers = {
 			Authorization: `Bearer ${token}`,
 		};
-		const response = await fetch("https://hrsystem.eraasoft.com/api/branches", {
-			method: "GET",
-			headers: headers,
-		});
+		const response = await fetch(
+			"https://hrsystem.eraasoft.com/api/departments",
+			{
+				method: "GET",
+				headers: headers,
+			}
+		);
 
 		const { data, message, status } = await response.json();
 		if (status >= 400) {
@@ -35,16 +39,15 @@ export const getBranches = createAsyncThunk(
 	}
 );
 
-export const branchSlice = createSlice({
-	name: "branch",
+export const departmentSlice = createSlice({
+	name: "department",
 	initialState,
 	reducers: {
-		getAllBranches: (state, action: PayloadAction<BranchItem[]>) => {
-			console.log(action.payload);
-			state.branchList = action.payload;
-
-			// state.branchList = action.payload.data;
-		},
+		// getAllBranches: (state, action: PayloadAction<DepartmentItem[]>) => {
+		// 	console.log(action.payload);
+		// 	state.departmentList = action.payload;
+		// 	// state.branchList = action.payload.data;
+		// },
 		// removeBranch: (state, action: PayloadAction<{ name: string }>) => {
 		// 	const newState = state.branchList?.filter((item) => {
 		// 		return item.name !== action.payload.name;
@@ -64,16 +67,16 @@ export const branchSlice = createSlice({
 		// },
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getBranches.pending, (state) => {
+		builder.addCase(getDepartments.pending, (state) => {
 			state.loading = true;
 		});
-		builder.addCase(getBranches.fulfilled, (state, action) => {
-			state.branchList = action.payload;
+		builder.addCase(getDepartments.fulfilled, (state, action) => {
+			state.departmentList = action.payload;
 			state.loading = false;
 		});
 	},
 });
 
-export const { getAllBranches } = branchSlice.actions;
+// export const { getA } = departmentSlice;
 
-export default branchSlice.reducer;
+export default departmentSlice.reducer;
